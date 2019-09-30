@@ -43,4 +43,5 @@ view model =
       |> Combox.clear False
       |> Combox.options [Attributes.class "combox"]
       |> Combox.view model.language
+    ]
 ```
