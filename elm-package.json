@@ -1,5 +1,5 @@
 {
-    "version": "1.0.1",
+    "version": "1.0.0",
     "summary": "Custom dropdown based on elm-selectize",
     "repository": "https://github.com/leonardanyer/elm-combox.git",
     "license": "BSD-3-Clause",
