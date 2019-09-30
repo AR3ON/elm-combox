@@ -1,8 +1,6 @@
-module Combox
-  exposing
+module Combox  exposing
     ( Model
     , Msg (..)
-    , Config (..)
     , config
     , view
     , update
@@ -45,7 +43,7 @@ module Combox
           |> Combox.view model.language
         ]
 
-@docs Model, Msg , Config, config, view, update, initial, empty, title, placeholder, clear, options
+@docs Model, Msg , config, view, update, initial, empty, title, placeholder, clear, options
 
 -}
 
@@ -90,7 +88,6 @@ type Config msg
   = Config
     { title : Maybe String
     , placeholder : Maybe String
-    , name : String
     , toMsg : Msg -> msg
     , options : List (Html.Attribute Msg)
     , clear : Bool
@@ -99,7 +96,6 @@ type Config msg
 {-| Create an initial configuration by calling the [`config`](#config) function
   - The [`title`](#title) function defines the title that goes in the header
   - The [`placeholder`](#placeholder) function defines the placeholder of selector
-  - The [`name`](#name) function defines the id property of the div
   - The [`clear`](#clear) function defines if the delete selection icon appears
   - The [`options`](#options) function defines the attributes html option list
 -}
@@ -107,7 +103,6 @@ config : ( Msg -> msg ) -> Config msg
 config msg = Config
     { title = Nothing
     , placeholder = Nothing
-    , name = "textfield-menu"
     , toMsg = msg
     , clear = True
     , options = []
@@ -156,44 +151,40 @@ andDo cmd ( model, cmds ) =
   , Cmd.batch [ cmd, cmds ]
   )
 
-{-| Change the current settings of clear
---    Combox.clear True
+{-| change the current settings of clear
 -}
 clear : Bool -> Config msg -> Config msg
-clear clear (Config config) = Config {config | clear = clear}
+clear clear (Config config) =
+  Config {config | clear = clear}
 
-{-| Change the current settings of attributes html options list
---    Combox.options [class "combox"]
+{-| Change the current settings of the options
 -}
 options : List (Html.Attribute Msg) -> Config msg -> Config msg
-options options (Config config) = Config {config | options = options}
+options options (Config config) =
+  Config {config | options = options}
 
-{-| Change the current settings of title
---    Combox.title "Languages"
+{-| change the current settings of the title
 -}
 title : String -> Config msg -> Config msg
-title title ( Config config ) = Config { config | title = Just title }
+title title ( Config config ) =
+  Config { config | title = Just title }
 
-{-| Change the current settings of placeholder
---    Combox.placeholder "All"
+{-| change the current settings of the placeholder
 -}
 placeholder : String -> Config msg -> Config msg
-placeholder placeholder ( Config config ) = Config { config | placeholder = Just placeholder }
+placeholder placeholder ( Config config ) =
+  Config { config | placeholder = Just placeholder }
 
-{-| Change the current settings of name
---    Combox.name "id-combox"
--}
-name : String -> Config msg -> Config msg
-name name ( Config config ) = Config { config | name = name }
+{-| Create the view configuration, for example
 
-{-| The custom dropdown's view function.
-  view: Model -> Html Msg
-  view model =
-    Html.div []
-    [ Html.h3 [] [ Html.text "Dropdown Menus" ]
-    , Combox.config ComboxMsg
-      |> Combox.view model.language
-    ]
+    view: Model -> Html Msg
+    view model =
+      Html.div []
+      [ Html.h3 [] [ Html.text "Dropdown Menus" ]
+      , Combox.config ComboxMsg
+        |> Combox.view model.language
+      ]
+
 -}
 view : Model -> Config msg -> Html msg
 view model ( Config config ) =
