@@ -1,15 +1,16 @@
 {
-    "version": "2.0.0",
-    "summary": "Custom dropdown based on elm-selectize",
+    "version": "1.0.0",
+    "summary": "Test Suites",
     "repository": "https://github.com/leonardanyer/elm-combox.git",
     "license": "BSD-3-Clause",
     "source-directories": [
-        "src"
+        "../src",
+        "."
     ],
-    "exposed-modules": [
-        "Combox"
-    ],
+    "exposed-modules": [],
     "dependencies": {
+        "eeue56/elm-html-test": "5.2.0 <= v < 6.0.0",
+        "elm-community/elm-test": "4.0.0 <= v < 5.0.0",
         "elm-lang/core": "5.0.0 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
         "kirchner/elm-selectize": "2.0.6 <= v < 3.0.0"

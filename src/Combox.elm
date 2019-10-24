@@ -10,6 +10,7 @@ module Combox  exposing
     , placeholder
     , clear
     , options
+    , disabled
     )
 
 {-| This is a custom dropdown based on elm-selectize.
@@ -43,7 +44,7 @@ module Combox  exposing
           |> Combox.view model.language
         ]
 
-@docs Model, Msg , config, view, update, initial, empty, title, placeholder, clear, options
+@docs Model, Msg , config, view, update, initial, empty, title, placeholder, clear, options, disabled
 
 -}
 
@@ -91,6 +92,7 @@ type Config msg
     , toMsg : Msg -> msg
     , options : List (Html.Attribute Msg)
     , clear : Bool
+    , disabled : Bool
     }
 
 {-| Create an initial configuration by calling the [`config`](#config) function
@@ -98,6 +100,7 @@ type Config msg
   - The [`placeholder`](#placeholder) function defines the placeholder of selector
   - The [`clear`](#clear) function defines if the delete selection icon appears
   - The [`options`](#options) function defines the attributes html option list
+  - The [`disabled`](#disabled) function defines if the selector is disabled or not
 -}
 config : ( Msg -> msg ) -> Config msg
 config msg = Config
@@ -106,13 +109,14 @@ config msg = Config
     , toMsg = msg
     , clear = True
     , options = []
+    , disabled = False
     }
 
 {-| The custom dropdown menu produces these messages.
 -}
 type Msg
     = MenuMsg (Selectize.Msg String)
-    | SelectText (Maybe String)
+    | Select (Maybe String)
 
 {-| Update the status of the drop-down menu.
 -}
@@ -129,7 +133,7 @@ update msg model =
               |> Cmd.map MenuMsg
 
             ( newMenu, menuCmd, maybeMsg ) =
-                Selectize.update SelectText
+                Selectize.update Select
                     model.selection
                     model.menu
                     selectizeMsg
@@ -142,7 +146,7 @@ update msg model =
                 update nextMsg newModel
                 |> andDo cmd
 
-      SelectText newSelection ->
+      Select newSelection ->
         ({model|selection=newSelection}, Cmd.none)
 
 andDo : Cmd msg -> ( model, Cmd msg ) -> ( model, Cmd msg )
@@ -162,6 +166,12 @@ clear clear (Config config) =
 options : List (Html.Attribute Msg) -> Config msg -> Config msg
 options options (Config config) =
   Config {config | options = options}
+
+{-| change the current settings of disabled
+-}
+disabled : Bool -> Config msg -> Config msg
+disabled disabled (Config config) =
+  Config {config | disabled = disabled}
 
 {-| change the current settings of the title
 -}
@@ -205,22 +215,27 @@ titlewrapper tit =
 
 viewAutocomplete: Config msg -> Selectize.ViewConfig String
 viewAutocomplete ( Config config ) =
-    viewConfig <|
-      Selectize.autocomplete <|
-            { attrs =
-                \sthSelected open ->
-                    [ Attributes.class "selectize__textfield"
-                    , Attributes.classList
-                        [ ( "selectize__textfield--selection c-black", sthSelected )
-                        , ( "selectize__textfield--no-selection c-gray", not sthSelected )
-                        , ( "selectize__textfield--menu-open", open )
-                        ]
-                    , Attributes.autocomplete False
-                    ]
-            , toggleButton = toggleButton
-            , clearButton = if config.clear then clearButton else Nothing
-            , placeholder = Maybe.withDefault "All" config.placeholder
-            }
+  viewConfig <|
+    Selectize.autocomplete <|
+      { attrs =
+          \sthSelected open ->
+              [ Attributes.class "selectize__textfield"
+              , Attributes.classList
+                  [ ( "selectize__textfield--selection c-black", sthSelected && (not config.disabled))
+                  , ( "selectize__textfield--no-selection c-gray", not sthSelected || config.disabled )
+                  , ( "selectize__textfield--menu-open", open )
+                  , ( "selectize__textfield--menu-disabled", config.disabled )
+                  ]
+              , Attributes.disabled config.disabled
+              , Attributes.autocomplete False
+              ]
+      , toggleButton = toggleButton
+      , clearButton =
+        case (not config.disabled && config.clear) of
+          True -> clearButton
+          False -> Nothing
+      , placeholder = Maybe.withDefault "All" config.placeholder
+      }
 
 viewConfig : Selectize.Input String -> Selectize.ViewConfig String
 viewConfig selector =
@@ -270,9 +285,9 @@ toggleButton =
                     , Attributes.class "selectize__icon"
                     ]
                     [ if open then
-                        Html.text "arrow_drop_up"
+                        Html.text "expand_less"
                       else
-                        Html.text "arrow_drop_down"
+                        Html.text "expand_more"
                     ]
                 ]
 
