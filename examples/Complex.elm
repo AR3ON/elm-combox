@@ -7,15 +7,16 @@ module Complex
         , update
         )
 
+import Browser
 import Html exposing (Html)
 import Html.Attributes as Attributes
 import Combox
 import Dict exposing (Dict)
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    Html.program
-        { init = init
+    Browser.element
+        { init = \_ -> init
         , update = update
         , subscriptions = subscriptions
         , view = view
@@ -53,6 +54,12 @@ type Msg
 type Language
     = Frontend
     | Backend
+
+toString: Language -> String
+toString lang =
+  case lang of
+    Frontend -> "Frontend"
+    Backend -> "Backend"
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =

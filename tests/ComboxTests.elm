@@ -1,15 +1,17 @@
 module ComboxTests exposing (..)
 
 import Combox
-import Html
-import Test exposing (Test, test, describe)
 import Expect
+import Html
+import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
-import Test.Html.Selector exposing (text, tag, class, classes)
+import Test.Html.Selector exposing (class, classes, tag, text)
 
-default: Combox.Model
+
+default : Combox.Model
 default =
-  Combox.initial "id-lang" Nothing languagelist
+    Combox.initial "id-lang" Nothing languagelist
+
 
 languagelist : List String
 languagelist =
@@ -19,18 +21,18 @@ languagelist =
     , "elm"
     ]
 
+
 all : Test
 all =
     let
-      html =
-        Combox.config (\_ -> ())
-        |> Combox.classes "combox"
-        |> Combox.view default
+        html =
+            Combox.config (\_ -> ())
+                |> Combox.view default
     in
-      describe "Dropdown"
+    describe "Dropdown"
         [ test "expect wrapping div and class" <|
             \() ->
                 html
-                |> Query.fromHtml
-                |> Query.has [ class "combox", tag "div" ]
+                    |> Query.fromHtml
+                    |> Query.has [ tag "div" ]
         ]
