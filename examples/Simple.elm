@@ -7,14 +7,15 @@ module Simple
         , update
         )
 
+import Browser
 import Html exposing (Html)
 import Html.Attributes as Attributes
 import Combox
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    Html.program
-        { init = init
+    Browser.element
+        { init = \_ -> init
         , update = update
         , subscriptions = subscriptions
         , view = view
