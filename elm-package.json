@@ -1,6 +1,6 @@
 {
     "version": "3.0.0",
-    "summary": "Custom dropdown based on elm-selectize" ,
+    "summary": "Custom dropdown based on elm-selectize",
     "repository": "https://github.com/leonardanyer/elm-combox.git",
     "license": "BSD-3-Clause",
     "source-directories": [
