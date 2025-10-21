@@ -1,4 +1,4 @@
-module Combox exposing (Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection)
+module Combox exposing (Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection, setSelection)
 
 {-| This is a custom dropdown based on elm-selectize.
 
@@ -31,7 +31,7 @@ module Combox exposing (Model, Msg, config, view, update, initial, empty, title,
                 |> Combox.view model.language
             ]
 
-@docs Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection
+@docs Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection, setSelection
 
 -}
 
@@ -51,10 +51,10 @@ type alias Model =
 
 {-| Initialize model with data
 -}
-initial : String -> Maybe String -> List String -> Model
-initial name selection items =
+initial : String -> List String -> Model
+initial name items =
     { name = name
-    , selection = selection
+    , selection = Nothing
     , menu = tomenu name items
     }
 
@@ -326,3 +326,10 @@ clearButton =
 getSelection : Model -> Maybe String
 getSelection model =
     model.selection
+
+
+{-| Set the selection in the model
+-}
+setSelection : Maybe String -> Model -> Model
+setSelection selection model =
+    { model | selection = selection }
