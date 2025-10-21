@@ -1,6 +1,6 @@
 {
     "type": "package",
-    "name": "leonardanyer/elm-combox",
+    "name": "AR3ON/elm-combox",
     "summary": "Custom dropdown based on elm-selectize",
     "license": "BSD-3-Clause",
     "version": "1.0.0",
