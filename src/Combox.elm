@@ -1,4 +1,4 @@
-module Combox exposing (Model, Msg(..), config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection)
+module Combox exposing (Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection)
 
 {-| This is a custom dropdown based on elm-selectize.
 
