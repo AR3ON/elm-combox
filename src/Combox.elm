@@ -1,4 +1,4 @@
-module Combox exposing (Model, Msg(..), config, view, update, initial, empty, title, placeholder, clear, options, disabled)
+module Combox exposing (Model, Msg(..), config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection)
 
 {-| This is a custom dropdown based on elm-selectize.
 
@@ -31,7 +31,7 @@ module Combox exposing (Model, Msg(..), config, view, update, initial, empty, ti
                 |> Combox.view model.language
             ]
 
-@docs Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled
+@docs Model, Msg, config, view, update, initial, empty, title, placeholder, clear, options, disabled, getSelection
 
 -}
 
@@ -319,3 +319,10 @@ clearButton =
                 ]
                 [ Html.text "clear" ]
             ]
+
+
+{-| Get the current selection from the model
+-}
+getSelection : Model -> Maybe String
+getSelection model =
+    model.selection
